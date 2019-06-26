@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+          <p id="rx">  elemaent:BUTTON;
+tedsxt:KsDПривет, World!;;
+countss:5; </p>
+   </body>
+</html>
+<script>
+        var item = document.getElementById('rx'); //Берём информацию из тега
+        var str = item.textContent;
+        console.log(str);
+        //Удаляем лишние переносы, делим строку
+        str = str.replace(/[\r\n]+/gm,'').trim().split(/\;\b/);
+        console.log(str);
+        var elem={};
+        //Регулярные выражения для поиска нужных подстрок
+        //Ищем любые символы после : до ;
+        var el = str[0].match(/.*:(\w*)[^;]*/i)[1];
+        elem.tag = el.toLowerCase();
+        //Ищем любые символы после : до ; (включая русские буквы)
+        el = str[1].match(/.*:([а-яё]*.*)[^;]*/i)[1];
+        elem.text = el;
+        //Ищем любые числа (+отрицательные) после : до ;
+        el = str[2].match(/.*:(-?\d*)[^;]*/i)[1];
+        elem.count = parseInt(el, 10);
+        console.log(elem);
+        //Проверка на ошибки
+        if(elem.tag == "" || elem.text == "" || elem.count <= 0)
+        {
+            console.log("ERROR");
+        }
+        //Создание новой страницы
+        document.body.removeChild(item);
+        for(var i = 0; i < elem.count; ++i)
+        {
+            var newElem = document.createElement(elem.tag);
+            var textnewElem = document.createTextNode(elem.text);
+            newElem.appendChild(textnewElem);
+            document.body.appendChild(newElem);
+        }
+</script>
